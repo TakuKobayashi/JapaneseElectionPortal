@@ -204,4 +204,11 @@ jspm_packages
 # Webpack directories
 .webpack
 
+**/*.js.map
+
+# Typescript v1 declaration files
+typings/
+
+lib/
+
 # End of https://www.gitignore.io/api/node,webstorm
