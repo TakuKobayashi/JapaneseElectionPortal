@@ -18,6 +18,9 @@ Google App ScriptのWebAPIのURLは
 `https://script.google.com/macros/s/{GASのId}/exec`
 となる
 
+またデータは以下のサイトにまとまっているのでこちらのデータを引用しています
+[国会議員一覧リスト](https://democracy.minibird.jp/)
+
 ### Clasp
 
 Google App Scriptをローカルのエディタで開発できるツール [clasp](https://github.com/google/clasp/)
