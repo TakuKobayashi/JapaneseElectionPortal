@@ -1,3 +1,4 @@
 **/**
-!*.js
+!webapi.js
+!spreadsheet-onedit.ts
 !appsscript.json

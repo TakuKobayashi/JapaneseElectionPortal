@@ -215,4 +215,4 @@ lib/
 
 firebaseConfig.json
 
-**/dist/*.js
+webapi.js

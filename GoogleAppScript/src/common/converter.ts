@@ -1,7 +1,5 @@
-global.doGet = (e: any) => {
-  // e.parameterでURL QueryのObejctが取得できる
-  const targetSpreadSheet = SpreadsheetApp.openById('1SDLr2wmcfl80_I7fat6DZGZH4USGgQwIqQh4G-_qkqE');
-  const resultObject = {};
+export function loadSpreadsheetToObjects(targetSpreadSheet: GoogleAppsScript.Spreadsheet.Spreadsheet): { [s: string]: any } {
+  const resultObject: { [s: string]: any } = {};
   for (const sheet of targetSpreadSheet.getSheets()) {
     const resultJsonObjects = [];
     const dataRange = sheet.getDataRange();
@@ -16,10 +14,5 @@ global.doGet = (e: any) => {
     }
     resultObject[sheet.getSheetName()] = resultJsonObjects;
   }
-  const jsonOut = ContentService.createTextOutput();
-  //Mime TypeをJSONに設定
-  jsonOut.setMimeType(ContentService.MimeType.JSON);
-  //JSONテキストをセットする
-  jsonOut.setContent(JSON.stringify(resultObject));
-  return jsonOut;
-};
+  return resultObject;
+}

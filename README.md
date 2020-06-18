@@ -7,7 +7,7 @@
 
 今回、Google Spread Sheetの情報を全てWebAPIとしてJSONを取得できるようなAPIは以下のリンクにアクセスすることで取得することができます。
 
-[政党と国会議員の情報を取得するWebAPI](https://script.google.com/macros/s/AKfycbwCZ54456sONL4wNYn-YZ79Ikc7NfAhVp53t3kY9rk/exec)
+[政党と国会議員の情報を取得するWebAPI](https://script.google.com/macros/s/AKfycbxx7A1zfUqZFhPKCGJkxiUnNYnYcv9zpinPmd-Pmf7q/exec)
 
 WebAPIとして取得する元となっているGoogle Spread Sheetはこちら(随時更新していきます)
 
