@@ -1,4 +1,4 @@
-export interface PoliticalParty{
+export interface PoliticalParty {
   id: string;
   name: string;
   url: string;

@@ -3,7 +3,7 @@ import 'source-map-support/register';
 import { APIGatewayEvent, APIGatewayProxyHandler, Context } from 'aws-lambda';
 import * as awsServerlessExpress from 'aws-serverless-express';
 import * as express from 'express';
-import { crawledFromPortal } from './common/crawl'
+import { crawledFromPortal } from './common/crawl';
 
 const app = express();
 const server = awsServerlessExpress.createServer(app);

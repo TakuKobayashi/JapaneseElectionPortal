@@ -1,4 +1,4 @@
-export interface Parliament{
+export interface Parliament {
   id: string;
   political_party_id: string;
   name: string;
@@ -23,7 +23,7 @@ export interface Parliament{
   parliament_house_number: string;
 }
 
-enum ParliamentType{
+enum ParliamentType {
   Syugiin,
   Sangiin,
 }

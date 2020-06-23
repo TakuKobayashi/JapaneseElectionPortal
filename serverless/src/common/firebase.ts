@@ -12,7 +12,7 @@ export function setupFireStorage() {
   return admin.storage();
 }
 
-function initFirebase(){
+function initFirebase() {
   if (admin.apps.length <= 0) {
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
