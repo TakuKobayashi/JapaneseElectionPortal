@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Parliament } from './interfaces/parliament';
+import { Parliament, ParliamentType } from './interfaces/parliament';
 import { PoliticalParty } from './interfaces/political-party';
 
 const cheerio = require('cheerio');
@@ -65,19 +65,76 @@ export async function crawledFromPortal() {
         }
       });
   });
-  const parliaments = [];
+  const parliaments: Partial<Parliament>[] = [];
   $('#syugi_in').each((i, syugi_in_elem) => {
     $(syugi_in_elem)
       .find('tr')
       .each((j, row_elem) => {
         if (j > 0) {
           const infomations = {};
-          //console.log($(row_elem).text());
+          infomations.parliament = ParliamentType[ParliamentType.Sangiin];
           $(row_elem)
             .find('td')
             .each((k, cell_elem) => {
               const elem = $(cell_elem);
-              infomations[elem.attr().class] = elem.text();
+              switch (k) {
+                case 0:
+                  infomations.id = elem.text();
+                  break;
+                case 1:
+                  infomations.constituency = elem.find('span').remove().end().text();
+                  break;
+                case 2:
+                  infomations.political_party_name = elem.text();
+                  break;
+                case 3:
+                  infomations.parliamentary_group = elem.text();
+                  break;
+                case 4:
+                  infomations.rubi_name = elem.find('.ruby').text();
+                  infomations.win_count = Number(elem.find('.win').text());
+                  infomations.name = elem.find('span').remove().end().text();
+                  break;
+                case 9:
+                  infomations.parliament_house_phone_number = elem.text();
+                  break;
+                case 10:
+                  infomations.parliament_house_fax_number = elem.text();
+                  break;
+                case 11:
+                  const url_attr11 = $(elem.find('a')).attr() || {};
+                  infomations.website_url = url_attr11.href;
+                  break;
+                case 12:
+                  const url_attr12 = $(elem.find('a')).attr() || {};
+                  infomations.twitter_url = url_attr12.href;
+                  break;
+                case 13:
+                  const url_attr13 = $(elem.find('a')).attr() || {};
+                  infomations.facebook_url = url_attr13.href;
+                  break;
+                case 14:
+                  const addressStrings = elem.text().split(' ');
+                  infomations.address = addressStrings[1];
+                  infomations.place_name = addressStrings[2];
+                  break;
+                case 15:
+                  infomations.local_phone_number = elem.text();
+                  break;
+                case 16:
+                  infomations.local_fax_number = elem.text();
+                  break;
+                case 17:
+                  const url_attr17 = $(elem.find('a')).attr() || {};
+                  infomations.contact_url = url_attr17.href;
+                  break;
+                case 18:
+                  const url_attr18 = $(elem.find('a')).attr() || {};
+                  infomations.mail_address = url_attr18.href;
+                  break;
+                default:
+                  break;
+              }
             });
           parliaments.push(infomations);
         }
@@ -98,12 +155,69 @@ async function loadFromCouncillors() {
       .each((j, row_elem) => {
         if (j > 0) {
           const infomations = {};
-          //console.log($(row_elem).text());
+          infomations.parliament = ParliamentType[ParliamentType.Sangiin];
           $(row_elem)
             .find('td')
             .each((k, cell_elem) => {
               const elem = $(cell_elem);
-              infomations[elem.attr().class] = elem.text();
+              switch (k) {
+                case 0:
+                  infomations.id = elem.text();
+                  break;
+                case 1:
+                  infomations.constituency = elem.find('span').remove().end().text();
+                  break;
+                case 2:
+                  infomations.political_party_name = elem.text();
+                  break;
+                case 3:
+                  infomations.parliamentary_group = elem.text();
+                  break;
+                case 4:
+                  infomations.rubi_name = elem.find('.ruby').text();
+                  infomations.win_count = Number(elem.find('.win').text());
+                  infomations.name = elem.find('span').remove().end().text();
+                  break;
+                case 9:
+                  infomations.parliament_house_phone_number = elem.text();
+                  break;
+                case 10:
+                  infomations.parliament_house_fax_number = elem.text();
+                  break;
+                case 11:
+                  const url_attr11 = $(elem.find('a')).attr() || {};
+                  infomations.website_url = url_attr11.href;
+                  break;
+                case 12:
+                  const url_attr12 = $(elem.find('a')).attr() || {};
+                  infomations.twitter_url = url_attr12.href;
+                  break;
+                case 13:
+                  const url_attr13 = $(elem.find('a')).attr() || {};
+                  infomations.facebook_url = url_attr13.href;
+                  break;
+                case 14:
+                  const addressStrings = elem.text().split(' ');
+                  infomations.address = addressStrings[1];
+                  infomations.place_name = addressStrings[2];
+                  break;
+                case 15:
+                  infomations.local_phone_number = elem.text();
+                  break;
+                case 16:
+                  infomations.local_fax_number = elem.text();
+                  break;
+                case 17:
+                  const url_attr17 = $(elem.find('a')).attr() || {};
+                  infomations.contact_url = url_attr17.href;
+                  break;
+                case 18:
+                  const url_attr18 = $(elem.find('a')).attr() || {};
+                  infomations.mail_address = url_attr18.href;
+                  break;
+                default:
+                  break;
+              }
             });
           parliaments.push(infomations);
         }

@@ -5,9 +5,10 @@ export interface Parliament {
   rubi_name: string;
   win_count: number;
   parliament: ParliamentType;
-  url: string;
+  website_url: string;
   postal_code: string;
   address: string;
+  place_name: string;
   constituency: string;
   local_phone_number: string;
   local_fax_number: string;
@@ -19,11 +20,9 @@ export interface Parliament {
   facebook_url: string;
   contact_url: string;
   mail_address: string;
-  parliament_house_ridge: string;
-  parliament_house_number: string;
 }
 
-enum ParliamentType {
+export enum ParliamentType {
   Syugiin,
   Sangiin,
 }
