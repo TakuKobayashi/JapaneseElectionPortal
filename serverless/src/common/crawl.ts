@@ -130,7 +130,8 @@ export async function crawledFromPortal() {
                   break;
                 case 18:
                   const url_attr18 = $(elem.find('a')).attr() || {};
-                  infomations.mail_address = url_attr18.href;
+                  const mailAddressString = url_attr18.href || "";
+                  infomations.mail_address = mailAddressString.replace("mailto:", "");
                   break;
                 default:
                   break;
@@ -213,7 +214,8 @@ async function loadFromCouncillors() {
                   break;
                 case 18:
                   const url_attr18 = $(elem.find('a')).attr() || {};
-                  infomations.mail_address = url_attr18.href;
+                  const mailAddressString = url_attr18.href || "";
+                  infomations.mail_address = mailAddressString.replace("mailto:", "");
                   break;
                 default:
                   break;
