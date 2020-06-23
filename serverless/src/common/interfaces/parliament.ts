@@ -1,10 +1,8 @@
 export interface Parliament {
-  id: string;
-  political_party_id: string;
   name: string;
   rubi_name: string;
   win_count: number;
-  parliament: ParliamentType;
+  parliamentType: ParliamentType;
   website_url: string;
   postal_code: string;
   address: string;

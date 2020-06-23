@@ -9,7 +9,6 @@ export async function crawledFromPortal() {
   // 政党一覧
   const political_parties: Partial<PoliticalParty>[] = [];
   $('#party_links').each((i, party_links_in_elem) => {
-    const political_party_keys: Partial<PoliticalParty> = [];
     $(party_links_in_elem)
       .find('tr')
       .each((j, row_elem) => {
@@ -70,17 +69,14 @@ export async function crawledFromPortal() {
     $(syugi_in_elem)
       .find('tr')
       .each((j, row_elem) => {
-        if (j > 0) {
-          const infomations = {};
+        if (j >= 1) {
+          const infomations: Partial<Parliament> = {};
           infomations.parliament = ParliamentType[ParliamentType.Sangiin];
           $(row_elem)
             .find('td')
             .each((k, cell_elem) => {
               const elem = $(cell_elem);
               switch (k) {
-                case 0:
-                  infomations.id = elem.text();
-                  break;
                 case 1:
                   infomations.constituency = elem.find('span').remove().end().text();
                   break;
@@ -149,22 +145,19 @@ export async function crawledFromPortal() {
 
 async function loadFromCouncillors() {
   const $ = await loadAndParseHTMLfromCheerio('https://democracy.minibird.jp/councillors.php');
-  const parliaments = [];
+  const parliaments: Partial<Parliament>[] = [];
   $('#sangi_in').each((i, sangi_in_elem) => {
     $(sangi_in_elem)
       .find('tr')
       .each((j, row_elem) => {
-        if (j > 0) {
-          const infomations = {};
+        if (j >= 1) {
+          const infomations: Partial<Parliament> = {};
           infomations.parliament = ParliamentType[ParliamentType.Sangiin];
           $(row_elem)
             .find('td')
             .each((k, cell_elem) => {
               const elem = $(cell_elem);
               switch (k) {
-                case 0:
-                  infomations.id = elem.text();
-                  break;
                 case 1:
                   infomations.constituency = elem.find('span').remove().end().text();
                   break;
