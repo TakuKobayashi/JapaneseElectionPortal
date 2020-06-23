@@ -1,4 +1,3 @@
-
 import * as admin from 'firebase-admin';
 
 const serviceAccount = require('../../firebaseConfig.json');
