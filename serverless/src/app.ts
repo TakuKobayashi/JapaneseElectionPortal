@@ -23,9 +23,8 @@ app.get('/test', async (req, res) => {
   const dataObjects = await crawledFromPortal();
 //  "AKfycbxx7A1zfUqZFhPKCGJkxiUnNYnYcv9zpinPmd-Pmf7q"
 //  "AKfycbwrAJJU9fOcTOLSGu9s9a1gAvKMdsYQZvtINHakGtcmhE7nihGH5FjNH5BzxTn_Ej0jgA"
-  const response = await axios.post("https://script.google.com/macros/s/" + "AKfycbxEUOO5kavczvqrpmSGN-TrykNtePop-fENJF89HrMhc8OTprJrS8HGKOBS-QFn2kfSNg" + "/exec", dataObjects);
-  console.log(response.data)
-  res.json(dataObjects);
+  const response = await axios.post("https://script.google.com/macros/s/" + "AKfycbwFgfDfIFvcBH8Tf2QKagJghceizuadIzhEzaVHPC4fvJA1B-PdCZDONyyUtVwLCe8Dvw" + "/exec", dataObjects);
+  res.json({data: response.data, status: response.status});
 });
 
 export const handler: APIGatewayProxyHandler = (event: APIGatewayEvent, context: Context) => {
