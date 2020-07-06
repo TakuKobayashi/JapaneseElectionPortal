@@ -22,13 +22,14 @@ export function doPost(e: any): GoogleAppsScript.Content.TextOutput {
     const headerPairs = getKeyNumberPairs(sheet);
     const headerValues = Object.values(headerPairs);
     let nextKeyNumber = headerValues.length > 0 ? Math.max(...headerValues) : 0;
+    let maxColumnNumber = 1;
     // Sheet内のJSONData
     const sheetData = data[sheetName];
+    const updateTargetRowsValuesList: { [n: number]: any }[] = [];
     // 1行分のObject
     for (let i = 0; i < sheetData.length; ++i) {
       const rowData = sheetData[i];
       const rowKeys = Object.keys(rowData);
-      const updateColumnNumbers: number[] = [];
       const updateTargetRowsValues: { [n: number]: any } = {};
       for (const rowKey of rowKeys) {
         // headerにないものKeyがきたらHeaderに追加する
@@ -39,16 +40,22 @@ export function doPost(e: any): GoogleAppsScript.Content.TextOutput {
         // データの更新
         const headerColumnNumber = headerPairs[rowKey];
         updateTargetRowsValues[headerColumnNumber] = rowData[rowKey];
-        updateColumnNumbers.push(headerColumnNumber);
+        if(maxColumnNumber < headerColumnNumber){
+          maxColumnNumber = headerColumnNumber
+        }
       }
-      // 変更すべきデータの行数の情報を取得
-      const targetRowsRange = sheet.getRange(2 + i, 1, 1, Math.max(...updateColumnNumbers));
-      const targetRowsValues = targetRowsRange.getValues();
-      for (const columnNumber of updateColumnNumbers) {
-        targetRowsValues[0][columnNumber - 1] = updateTargetRowsValues[columnNumber];
-      }
-      targetRowsRange.setValues(targetRowsValues);
+      updateTargetRowsValuesList.push(updateTargetRowsValues);
     }
+    // 変更すべきデータの行数の情報を取得
+    const targetRowsRange = sheet.getRange(2, 1, sheetData.length, maxColumnNumber);
+    const targetRowsValues = targetRowsRange.getValues();
+    for(let i = 0;i < updateTargetRowsValuesList.length;++i){
+      const updateColumnNumbers = Object.keys(updateTargetRowsValuesList[i]);
+      for (const columnNumber of updateColumnNumbers) {
+        targetRowsValues[i][columnNumber - 1] = updateTargetRowsValuesList[i][columnNumber];
+      }
+    }
+    targetRowsRange.setValues(targetRowsValues);
     updateHeaderValues(sheet, headerPairs);
   }
   const jsonOut = ContentService.createTextOutput();
