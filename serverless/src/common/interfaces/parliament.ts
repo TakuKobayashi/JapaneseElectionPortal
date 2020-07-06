@@ -6,7 +6,6 @@ export interface Parliament {
   website_url: string;
   postal_code: string;
   address: string;
-  place_name: string;
   constituency: string;
   local_phone_number: string;
   local_fax_number: string;

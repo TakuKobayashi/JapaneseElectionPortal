@@ -5,6 +5,7 @@ import * as awsServerlessExpress from 'aws-serverless-express';
 import * as express from 'express';
 import { crawledFromPortal } from './common/crawl';
 import axios from 'axios';
+const querystring = require('querystring');
 
 const app = express();
 const server = awsServerlessExpress.createServer(app);
@@ -22,13 +23,12 @@ app.get('/', (req, res) => {
 app.get('/test', async (req, res) => {
   const dataObjects = await crawledFromPortal();
   console.log(dataObjects);
-  //  "AKfycbxx7A1zfUqZFhPKCGJkxiUnNYnYcv9zpinPmd-Pmf7q"
-  //  "AKfycbwrAJJU9fOcTOLSGu9s9a1gAvKMdsYQZvtINHakGtcmhE7nihGH5FjNH5BzxTn_Ej0jgA"
-  const response = await axios.post(
-    'https://script.google.com/macros/s/' + 'AKfycbxuIIH-sCZEUUeOw9oH7uhux78VWp7jpOJ6o6JPrxK-Uh-nbIT3WoVqVaIVXcr8p5o3Zw' + '/exec',
-    dataObjects,
-  );
-  res.json({ data: response.data, status: response.status });
+  const query = querystring.stringify({ keys_column_row: 1, primary_key: 'id' });
+  const url =
+    'https://script.google.com/macros/s/' + 'AKfycbwn5QT2a_xlxUoAQr0-eCwj4SuSkCOJeRlEiLr_hnze0CJVaARZYb3O0Ag33p8MBPXxCA' + '/exec?' + query;
+  console.log(url);
+  const response = await axios.post(url, dataObjects);
+  res.json({ status: response.status, data: response.data });
 });
 
 export const handler: APIGatewayProxyHandler = (event: APIGatewayEvent, context: Context) => {

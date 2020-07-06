@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Parliament, ParliamentType } from './interfaces/parliament';
 import { PoliticalParty } from './interfaces/political-party';
+import { isURL } from './util';
 import cheerio, { CheerioStatic } from 'cheerio';
 
 export async function crawledFromPortal() {
@@ -65,8 +66,11 @@ export async function crawledFromPortal() {
   });
   const parliaments = loadFromCouncillors(democracyCheerio, ParliamentType.Syugiin);
   const cheerioCouncillor = await loadAndParseHTMLfromCheerio('https://democracy.minibird.jp/councillors.php');
-  for (const parliament of loadFromCouncillors(cheerioCouncillor, ParliamentType.Sangiin)) {
-    parliaments.push(parliament);
+  for (const sangiinParliament of loadFromCouncillors(cheerioCouncillor, ParliamentType.Sangiin)) {
+    parliaments.push(sangiinParliament);
+  }
+  for (let i = 0; i < parliaments.length; ++i) {
+    parliaments[i].id = i + 1;
   }
   return { political_parties, parliaments };
 }
@@ -120,8 +124,7 @@ function loadFromCouncillors($: CheerioStatic, parliamentType: ParliamentType): 
                   break;
                 case 14:
                   const addressStrings = elem.text().split(' ');
-                  infomations.address = addressStrings[1];
-                  infomations.place_name = addressStrings[2];
+                  infomations.address = addressStrings.slice(1).join('');
                   break;
                 case 15:
                   infomations.local_phone_number = elem.text();

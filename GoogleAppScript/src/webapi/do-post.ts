@@ -2,6 +2,10 @@ import { loadSpreadsheetToObjects } from '../common/converter';
 import { getKeyNumberPairs, updateHeaderValues } from '../common/sheet-data';
 
 export function doPost(e: any): GoogleAppsScript.Content.TextOutput {
+  const dataKeysColumnRow: number = e.parameter.keys_column_row || 1;
+  const dataStartRowNumber: number = e.parameter.start_row || 2;
+  const primaryKeyName = e.parameter.primary_key;
+
   const data = JSON.parse(e.postData.getDataAsString());
   const sheetNames = Object.keys(data);
 
@@ -19,7 +23,7 @@ export function doPost(e: any): GoogleAppsScript.Content.TextOutput {
     if (!sheet) {
       continue;
     }
-    const headerPairs = getKeyNumberPairs(sheet);
+    const headerPairs = getKeyNumberPairs(sheet, dataKeysColumnRow);
     const headerValues = Object.values(headerPairs);
     let nextKeyNumber = headerValues.length > 0 ? Math.max(...headerValues) : 0;
     let maxColumnNumber = 1;
@@ -40,23 +44,23 @@ export function doPost(e: any): GoogleAppsScript.Content.TextOutput {
         // データの更新
         const headerColumnNumber = headerPairs[rowKey];
         updateTargetRowsValues[headerColumnNumber] = rowData[rowKey];
-        if(maxColumnNumber < headerColumnNumber){
-          maxColumnNumber = headerColumnNumber
+        if (maxColumnNumber < headerColumnNumber) {
+          maxColumnNumber = headerColumnNumber;
         }
       }
       updateTargetRowsValuesList.push(updateTargetRowsValues);
     }
     // 変更すべきデータの行数の情報を取得
-    const targetRowsRange = sheet.getRange(2, 1, sheetData.length, maxColumnNumber);
+    const targetRowsRange = sheet.getRange(dataStartRowNumber, 1, sheetData.length, maxColumnNumber);
     const targetRowsValues = targetRowsRange.getValues();
-    for(let i = 0;i < updateTargetRowsValuesList.length;++i){
+    for (let i = 0; i < updateTargetRowsValuesList.length; ++i) {
       const updateColumnNumbers = Object.keys(updateTargetRowsValuesList[i]);
       for (const columnNumber of updateColumnNumbers) {
         targetRowsValues[i][columnNumber - 1] = updateTargetRowsValuesList[i][columnNumber];
       }
     }
     targetRowsRange.setValues(targetRowsValues);
-    updateHeaderValues(sheet, headerPairs);
+    updateHeaderValues(sheet, headerPairs, dataKeysColumnRow);
   }
   const jsonOut = ContentService.createTextOutput();
   //Mime TypeをJSONに設定
