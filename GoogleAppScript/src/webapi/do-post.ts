@@ -56,10 +56,12 @@ export function doPost(e: any): GoogleAppsScript.Content.TextOutput {
     for (let i = 0; i < updateTargetRowsValuesList.length; ++i) {
       const updateColumnNumbers = Object.keys(updateTargetRowsValuesList[i]);
       let rowNumber;
-      if(primaryKeyName){
-        rowNumber = targetRowsValues.findIndex((rowValues) => rowValues[headerPairs[primaryKeyName] - 1] == updateTargetRowsValuesList[i][headerPairs[primaryKeyName]])
+      if (primaryKeyName) {
+        rowNumber = targetRowsValues.findIndex(
+          (rowValues) => rowValues[headerPairs[primaryKeyName] - 1] == updateTargetRowsValuesList[i][headerPairs[primaryKeyName]],
+        );
       }
-      if(!rowNumber || rowNumber < 0){
+      if (!rowNumber || rowNumber < 0) {
         rowNumber = i;
       }
       for (const columnNumber of updateColumnNumbers) {
