@@ -124,7 +124,7 @@ function loadFromCouncillors($: CheerioStatic, parliamentType: ParliamentType): 
                   break;
                 case 14:
                   const addressStrings = elem.text().split(' ');
-                  infomations.address = addressStrings.slice(1).join('');
+                  infomations.address = addressStrings.slice(1).join(' ');
                   break;
                 case 15:
                   infomations.local_phone_number = elem.text();

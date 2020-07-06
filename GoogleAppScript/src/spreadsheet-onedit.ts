@@ -58,27 +58,6 @@ function getKeyNumberPairs(targetSheet: GoogleAppsScript.Spreadsheet.Sheet): { [
   return keyNumberPairs;
 }
 
-// 住所が入力されていれば自動的に緯度経度も入力されるようにする
-function updateLatLon(targetRowsValues: any[][], keyNumberPairs: { [s: string]: number }): void {
-  const updateTargetRowsValues = [...targetRowsValues];
-  for (let r = 0; r < updateTargetRowsValues.length; ++r) {
-    const addressIndex = keyNumberPairs.address - 1;
-    const latIndex = keyNumberPairs.lat - 1;
-    const lonIndex = keyNumberPairs.lon - 1;
-    const postalCodeIndex = keyNumberPairs.postal_code - 1;
-    if (updateTargetRowsValues[r][addressIndex] && (!updateTargetRowsValues[r][latIndex] || !updateTargetRowsValues[r][lonIndex])) {
-      const geocodeResponses = convertGeocode(updateTargetRowsValues[r][addressIndex]);
-      updateTargetRowsValues[r][latIndex] = geocodeResponses[0].geometry.location.lat;
-      updateTargetRowsValues[r][lonIndex] = geocodeResponses[0].geometry.location.lng;
-      const postal_code_component = geocodeResponses[0].address_components.find((component) => component.types.includes('postal_code'));
-      if (postal_code_component) {
-        updateTargetRowsValues[r][postalCodeIndex] = postal_code_component.long_name;
-      }
-    }
-  }
-  return updateTargetRowsValues;
-}
-
 function normalizeAll(range: GoogleAppsScript.Spreadsheet.Range): any[][] {
   const data = range.getValues();
   for (let row = 0; row < data.length; ++row) {
@@ -89,6 +68,29 @@ function normalizeAll(range: GoogleAppsScript.Spreadsheet.Range): any[][] {
     }
   }
   return data;
+}
+
+// 住所が入力されていれば自動的に緯度経度も入力されるようにする
+export function updateLatLon(targetRowsValues: any[][], keyNumberPairs: { [s: string]: number }): any[][] {
+  const updateTargetRowsValues = [...targetRowsValues];
+  for (let r = 0; r < updateTargetRowsValues.length; ++r) {
+    const addressIndex = keyNumberPairs.address - 1;
+    const latIndex = keyNumberPairs.lat - 1;
+    const lonIndex = keyNumberPairs.lon - 1;
+    const postalCodeIndex = keyNumberPairs.postal_code - 1;
+    if (updateTargetRowsValues[r][addressIndex] && (!updateTargetRowsValues[r][latIndex] || !updateTargetRowsValues[r][lonIndex])) {
+      const geocodeResponses = convertGeocode(updateTargetRowsValues[r][addressIndex]);
+      if(geocodeResponses[0]){
+        updateTargetRowsValues[r][latIndex] = geocodeResponses[0].geometry.location.lat;
+        updateTargetRowsValues[r][lonIndex] = geocodeResponses[0].geometry.location.lng;
+        const postal_code_component = geocodeResponses[0].address_components.find((component) => component.types.includes('postal_code'));
+        if (postal_code_component) {
+          updateTargetRowsValues[r][postalCodeIndex] = postal_code_component.long_name;
+        }
+      }
+    }
+  }
+  return updateTargetRowsValues;
 }
 
 function convertGeocode(address: string): any {
