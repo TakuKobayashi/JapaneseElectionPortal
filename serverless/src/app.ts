@@ -25,8 +25,7 @@ app.get('/test', async (req, res) => {
   console.log(dataObjects);
   const query = querystring.stringify({ keys_column_row: 1, primary_key: 'id' });
   const url =
-    'https://script.google.com/macros/s/' + 'AKfycbwn5QT2a_xlxUoAQr0-eCwj4SuSkCOJeRlEiLr_hnze0CJVaARZYb3O0Ag33p8MBPXxCA' + '/exec?' + query;
-  console.log(url);
+    'https://script.google.com/macros/s/' + 'AKfycbyue97VU9lw_7eYPKhKm5ltkjxFBFbJstxfqmzJWXdKJLKq_k7_V-2CbUgAJjNqtqX2jA' + '/exec?' + query;
   const response = await axios.post(url, dataObjects);
   res.json({ status: response.status, data: response.data });
 });

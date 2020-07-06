@@ -55,8 +55,15 @@ export function doPost(e: any): GoogleAppsScript.Content.TextOutput {
     const targetRowsValues = targetRowsRange.getValues();
     for (let i = 0; i < updateTargetRowsValuesList.length; ++i) {
       const updateColumnNumbers = Object.keys(updateTargetRowsValuesList[i]);
+      let rowNumber;
+      if(primaryKeyName){
+        rowNumber = targetRowsValues.findIndex((rowValues) => rowValues[headerPairs[primaryKeyName] - 1] == updateTargetRowsValuesList[i][headerPairs[primaryKeyName]])
+      }
+      if(!rowNumber || rowNumber < 0){
+        rowNumber = i;
+      }
       for (const columnNumber of updateColumnNumbers) {
-        targetRowsValues[i][columnNumber - 1] = updateTargetRowsValuesList[i][columnNumber];
+        targetRowsValues[rowNumber][columnNumber - 1] = updateTargetRowsValuesList[i][columnNumber];
       }
     }
     targetRowsRange.setValues(targetRowsValues);
