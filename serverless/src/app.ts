@@ -24,7 +24,7 @@ app.get('/test', async (req, res) => {
   console.log(dataObjects);
 //  "AKfycbxx7A1zfUqZFhPKCGJkxiUnNYnYcv9zpinPmd-Pmf7q"
 //  "AKfycbwrAJJU9fOcTOLSGu9s9a1gAvKMdsYQZvtINHakGtcmhE7nihGH5FjNH5BzxTn_Ej0jgA"
-  const response = await axios.post("https://script.google.com/macros/s/" + "AKfycbwne0LD6IfKjnNmAq8fMXewQZAcsw1ZU_a_vIm3RT9xPjqt9UlJ_k_JNUiE9UPxMFE7Aw" + "/exec", dataObjects);
+  const response = await axios.post("https://script.google.com/macros/s/" + "AKfycbz218-vHudL66aHVu9xqgmISk3ORUcWB4VVqsSbAC7XjQ3wsndL7m1GNKz5lTvkmiZIrA" + "/exec", dataObjects);
   res.json({data: response.data, status: response.status});
 });
 

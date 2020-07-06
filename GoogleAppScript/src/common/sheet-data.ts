@@ -23,7 +23,8 @@ export function updateHeaderValues(targetSheet: GoogleAppsScript.Spreadsheet.She
       return 0;
     }
   });
-  const maxColumnNumber = keyNumberPairs.length > 0 ? Math.max(...Object.values(keyNumberPairs)) : 1;
+  const numbers = Object.values(keyNumberPairs);
+  const maxColumnNumber = numbers.length > 0 ? Math.max(...numbers) : 1;
   const headerRange = targetSheet.getRange(KEYS_COLUMN_ROW, 1, 1, maxColumnNumber);
   headerRange.setValues([keyArray]);
 }
