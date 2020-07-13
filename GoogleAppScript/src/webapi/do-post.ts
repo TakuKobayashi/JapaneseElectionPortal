@@ -1,4 +1,3 @@
-import { loadSpreadsheetToObjects } from '../common/converter';
 import { getKeyNumberPairs, updateHeaderValues } from '../common/sheet-data';
 
 export function doPost(e: any): GoogleAppsScript.Content.TextOutput {
